@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recycle Garbage  - เปลี่ยนขยะให้เป็นคุณค่า</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #f0fdf4;
+        }
+        .category-card:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+		
+		
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="bg-green-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2 cursor-pointer" onclick="showPage('home')">
+                <i class="fas fa-recycle text-2xl"></i>
+                <span class="text-xl font-bold tracking-wider">Recycle Garbage </span>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <button onclick="showPage('home')" class="hover:text-green-200 transition">หน้าแรก</button>
+				<button onclick="showPage('buying-points')" class="hover:text-green-200 transition">แหล่งรับซื้อ</button>
+                <button onclick="showPage('tips')" class="hover:text-green-200 transition">เคล็ดลับการแยกขยะ</button>
+                <button onclick="showPage('about')" class="hover:text-green-200 transition">เกี่ยวกับเรา</button>
+            </div>
+        </div>
+    </nav>
+	<style>
+body {
+  font-family: 'Sarabun', sans-serif;
+  background-image: url('img/word/loi.jpg');  
+  background-size: cover;             
+  background-position: center;         
+  background-repeat: no-repeat;        
+}
+</style>
+
+    <!-- App Content -->
+    <main id="app-content" class="container mx-auto px-4 py-8 min-h-screen">
+        <!-- Content will be injected here -->
+    </main>
+
+    <!-- Footer ส่วนท้ายของเว็บไซต์ -->
+    <footer class="bg-green-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-4">ร่วมสร้างโลกสีเขียวด้วยการรีไซเคิล</p>
+            <div class="flex justify-center space-x-4">
+                <i class="fab fa-facebook text-xl cursor-pointer hover:text-blue-400"></i>
+                <i class="fab fa-youtube text-xl cursor-pointer hover:text-red-500"></i>
+                <i class="fab fa-instagram text-xl cursor-pointer hover:text-pink-400"></i>
+            </div>
+            <p class="mt-6 text-sm text-green-300">© 2024 Recycle Garbage Thailand</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mock Database
+        const categories = [
+            { id: 1, name: 'พลาสติกแข็ง', icon: 'fa-wine-bottle', color: 'bg-blue-500' },
+            { id: 2, name: 'กระดาษ', icon: 'fa-file-lines', color: 'bg-yellow-500' },
+            { id: 3, name: 'กระป๋องอลูมิเนียม', icon: 'fa-box', color: 'bg-gray-400' },
+            { id: 4, name: 'โลหะ', icon: 'fa-hammer', color: 'bg-zinc-600' },
+            { id: 5, name: 'ถุงพลาสติก', icon: 'fa-bag-shopping', color: 'bg-cyan-400' },
+            { id: 6, name: 'ลังกระดาษ', icon: 'fa-box', color: 'bg-orange-700' },
+            { id: 7, name: 'ถุงขนม', icon: 'fa-cookie-bite', color: 'bg-pink-500' },
+            { id: 8, name: 'หลอด', icon: 'fa-martini-glass', color: 'bg-purple-400' }
+        ];
+
+        const projects = [
+            { 
+                catId: 1, 
+                title: 'ที่ใส่แปรงสีฟัน จากตะกร้าขนมจีน', 
+                creator: 'Rin Handmade', 
+                desc: 'การทำที่ใส่แปรงสีฟันจากตะกร้าขนมจีนพลาสติกเป็นไอเดีย DIY ที่ยอดเยี่ยมในการนำวัสดุเหลือใช้กลับมาใช้ใหม่ (Upcycling) โดยการล้างทำความสะอาดตะกร้า นำมาตกแต่ง หรือผูกติดกันเพื่อสร้างช่องใส่แปรงสีฟันและยาสีฟัน ช่วยเพิ่มความเป็นระเบียบและลดขยะได้',
+                links: { fb: 'SomchaiEco', yt: 'https://www.youtube.com/watch?v=gFonBmR-3Ts', web: 'www.somchaieco.com' },
+                img: 'img/P1/Brushholder.jpg'
+            },
+			{ 
+                catId: 1, 
+                title: 'Upcycled ยืดชีวิต ฝาขวดพลาสติกรีไซเคิลได้ (TH/EN)', 
+                creator: 'รัชดาภรณ์ ศุภประสิทธิ์', 
+                desc: 'คัดแยกสี ล้างคราบไขมันและสิ่งสกปรก ตากแห้งในที่ร่ม แล้วจึงนำมาบดเป็นเศษพลาสติกแยกตามสี ก่อนนำไปหลอมเป็นเส้นขึ้นรูปตามรูปทรงของภาชนะต้นแบบ หรืออัดขึ้นรูปผ่านแม่พิมพ์อัลลอยด์ที่สามารถผลิตสีได้ตามต้องการจากการผสมเศษพลาสติกต่างสี',
+                links: { web: 'https://www.creativethailand.org/profile/?profile_id=33' },
+                img: 'img/P1/chair.png'
+            },
+			{ 
+                catId: 1, 
+                title: 'กระปุกออมสินจากขวดน้ำพลาสติก ของเล่นเสริมพัฒนาการสำหรับเด็ก', 
+                creator: 'Mahidol Kids', 
+                desc: 'กระปุกออมสินอู๊ดอู๊ด ที่ทำมาจากขวดน้ำพลาสติกเหลือใช้ นำมารีไซเคิลเปลี่ยนขยะให้กลายเป็นกระปุกออมสินน่ารัก ๆ เสริมพัฒนาการเด็กด้วยของเล่น',
+                links: { fb: 'https://www.facebook.com/mahidolchannel', yt: 'https://www.youtube.com/mahidolkids', web: 'www.somchaieco.com' },
+                img: 'img/P1/pig.jpg'
+            },
+			{ 
+                catId: 1, 
+                title: 'จานรองแก้ว', 
+                creator: 'Polymer SWU', 
+                desc: 'จานรองแก้วจากฝาขวดพลาสติก เป็นผลิตภัณฑ์อัพไซเคิล (Upcycling) ที่นำฝาขวดพลาสติกประเภท HDPE (เบอร์ 2) หรือ PP (เบอร์ 5) ซึ่งทนความร้อนมาหลอมอัดขึ้นรูปใหม่หรือเรียงกันด้วยปืนกาว มีคุณสมบัติเหนียว ทนทาน แข็งแรง และมีสีสันสวยงามจากเศษพลาสติกที่คัดแยกสี ช่วยลดขยะและเพิ่มมูลค่า',
+                links: { fb:' https://www.facebook.com/PolymerSWU/posts/%E0%B8%88%E0%B8%B2%E0%B8%99%E0%B8%A3%E0%B8%AD%E0%B8%87%E0%B9%81%E0%B8%81%E0%B9%89%E0%B8%A7%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B8%9D%E0%B8%B2%E0%B8%82%E0%B8%A7%E0%B8%94%E0%B8%9E%E0%B8%A5%E0%B8%B2%E0%B8%AA%E0%B8%95%E0%B8%B4%E0%B8%81-upcyclingproductsbypolymerswu-%EF%B8%8F-%E0%B8%9C%E0%B8%A5%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%AD%E0%B8%AD%E0%B8%81%E0%B9%81%E0%B8%9A%E0%B8%9A%E0%B8%AA%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%87%E0%B8%AA%E0%B8%A3%E0%B8%A3/1227186562539301/', web: 'https://www.facebook.com/PolymerSWU/posts/%E0%B8%88%E0%B8%B2%E0%B8%99%E0%B8%A3%E0%B8%AD%E0%B8%87%E0%B9%81%E0%B8%81%E0%B9%89%E0%B8%A7%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B8%9D%E0%B8%B2%E0%B8%82%E0%B8%A7%E0%B8%94%E0%B8%9E%E0%B8%A5%E0%B8%B2%E0%B8%AA%E0%B8%95%E0%B8%B4%E0%B8%81-upcyclingproductsbypolymerswu-%EF%B8%8F-%E0%B8%9C%E0%B8%A5%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%AD%E0%B8%AD%E0%B8%81%E0%B9%81%E0%B8%9A%E0%B8%9A%E0%B8%AA%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%87%E0%B8%AA%E0%B8%A3%E0%B8%A3/1227186562539301/' },
+                img: 'img/P1/kig.jpeg'
+            },
+			{ 
+                catId: 1, 
+                title: 'ประติมาหมืจากพลาสติก', 
+                creator: 'IONIQ Lab', 
+                desc: 'ประติมากรรมจากพลาสติก (Plastic Sculpture) เป็นศิลปะที่เปลี่ยนขยะหรือวัสดุพลาสติกใช้แล้ว (เช่น ขวด PET, ของเล่นเก่า, อวน) ให้เป็นงานศิลปะลอยตัวขนาดใหญ่เพื่อรณรงค์เรื่องสิ่งแวดล้อม มีจุดเด่นด้านการใช้วัสดุเหลือใช้, การเล่นแสงสีในเวลากลางคืน และการสะท้อนปัญหาสัตว์ทะเลที่ได้รับผลกระทบจากขยะพลาสติก',
+                links: {web:'https://www.thairath.co.th/futureperfect/articles/2808948'},
+				 img: 'img/P1/bad.jpg'
+            },
+			{ 
+                catId: 1, 
+                title: 'ถังขยะจากพลาสติก', 
+                creator: 'GMR ONLINE', 
+                desc: 'ลดปริมาณพลาสติก สามารถนาไปใช้ที่บ้าน ตามต้องการ เป็นการนาขยะพลาสติก กลับมาใช้ใหม่ให้เกิดประโยชน์สูงสุด เป็นการลดภาวะโลกร้อน ลดปริมาณการเผาขยะทาให้ลด แก็สพิษในอากาศ',
+                links: { web: 'https://mgronline.com/smes/detail/9610000051087' },
+                img: 'img/P1/jok.jpeg'
+            },
+			
+            { 
+                catId: 2, 
+                title: 'ไอเดียทำศิลปะจากกระดาษหนังสือพิมพ์', 
+                creator: 'สำนักงานศิลปวัฒนธรรมร่วมสมัย', 
+                desc: 'กระดาษหนังสือพิมพ์เก่าๆสามารถนำมาทำศิลปะติดผนังเก๋ๆ จะใช้สีของกระดาษสดๆเลยก็ดูดิบๆดี หรือจะเพ้นท์สีทับลงไปก็ มาชวนลูกๆสนุก',
+                links: { fb: 'https://www.google.com/imgres?imgurl=https://l', yt: 'HandmadeByWi', web: 'https://share.google/WGun3IGPpAh8f9ebc' },
+                img: 'img/Paper/Cat.jpeg'
+            },
+			
+			{ 
+                catId: 2, 
+                title: 'ไอเดียกระดาษที่เป็นประโยชน์', 
+                creator: 'DIY 5 นาทีฉบับวัยใส', 
+                desc: 'กระดาษเก่าๆสามารถนำมาทำศิลปะติดผนังเก๋ๆ จะใช้สีของกระดาษสดๆเลยก็ดูดิบๆดี หรือจะเพ้นท์สีทับลงไปก็ได้',
+                links: { yt: 'https://www.youtube.com/watch?v=J0X79p4rh4', web: 'https://share.google/WGun3IGPpAh8f9ebc' },
+                img: 'img/Paper/Floor.jpg'
+            },
+			{ 
+                catId: 2, 
+                title: 'พับที่คั่นหนังสือ', 
+                creator: 'MomOrn Easy Origami', 
+                desc: 'ทำได้ง่ายๆ เพียงตัดกระดาษสี่เหลี่ยมจัตุรัส พับครึ่งเป็นสามเหลี่ยม พับมุมสองด้านมาบรรจบกันตรงกลาง พลิกด้านแล้วพับมุมลงมา จากนั้นสอดเก็บปลายกระดาษเข้าช่องตรงกลาง ตกแต่งเป็นรูปสัตว์หรือการ์ตูนตามชอบ เป็นที่คั่นมุมหนังสือที่สวยงามและใช้งานสะดวก',
+                links: { yt: 'https://www.youtube.com/watch?v=qfUJK4FeAN0', web: 'https://share.google/ub65Mv38diYZFtssY' },
+                img: 'img/Paper/separator.jpg'
+            },
+			{ 
+                catId: 2, 
+                title: 'craft', 
+                creator: 'AKERU', 
+                desc: 'ผลงานจากกระดาษมีหลากหลายรูปแบบ ตั้งแต่ศิลปะประณีตจนถึงสิ่งของใช้งานจริง โดยการตัด พับ ม้วน หรือขึ้นรูปใหม่ เช่น ประติมากรรมกระดาษ, ภาพตัดปะ, โมเดลสามมิติ, ที่ใส่เครื่องเขียน, และกระดาษรีไซเคิล ช่วยเพิ่มมูลค่าและสร้างสรรค์งานศิลปะที่เป็นมิตรต่อสิ่งแวดล้อม ',
+                links: {  web: 'https://www.akerufeed.com/trend-life/30-paper-craft-ideas' },
+                img: 'img/Paper/ljh.jpg'
+            },
+			{ 
+                catId: 2, 
+                title: 'วิธีทำพัดจีนแบบง่ายๆ', 
+                creator: ' Rin Handmade', 
+                desc: 'ผลงานพัดจากกระดาษเป็นงานประดิษฐ์ที่เรียบง่ายแต่สร้างสรรค์ ทำได้ตั้งแต่พัดจีนแบบพับเองง่ายๆ ไปจนถึงพัดกระดาษสาสมุนไพร โดยใช้วิธีการพับทบ (Accordion fold) ขนาดประมาณ 0.5 นิ้ว ตกแต่งด้วยกลิตเตอร์สีทองหรือริบบิ้น แล้วติดไม้ไอศกรีมเพื่อความแข็งแรง เหมาะสำหรับทำเป็นของที่ระลึกหรือของใช้',
+                links: { yt:'https://www.youtube.com/watch?v=a80ZFfPHBio' ,web: 'https://www.youtube.com/watch?v=woeJs60GmpU'},
+                img: 'img/Paper/bowr.jpg'
+            },
+			{ 
+                catId: 2, 
+                title: 'วิธีทำผลไม้กระดาษ', 
+                creator: 'Miracle Of Paper', 
+                desc: 'การทำผลไม้จากกระดาษเป็นงานประดิษฐ์ (DIY) ที่สร้างสรรค์ โดยมักใช้กระดาษสี กระดาษแข็ง หรือกระดาษลูกฟูกนำมาตัด พับ ติดกาวเป็นรูปทรง 3 มิติ เช่น ส้ม, แอปเปิ้ล, สตรอเบอร์รี่ ใช้ตกแต่งบ้าน แขวนโมบาย หรือทำเป็นสื่อการเรียนการสอนสำหรับเด็ก ซึ่งมีเทคนิคการพับหีบเพลงและการประกบส่วนต่าง ๆ ให้ดูมีมิติ',
+                links: { yt:'https://www.youtube.com/watch?v=woeJs60GmpU' ,web: 'https://www.youtube.com/watch?v=a80ZFfPHBio'},
+                img: 'img/Paper/fre.jpg'
+            },
+			{ 
+                catId: 2, 
+                title: 'วิธีทำผลไม้กระดาษ', 
+                creator: 'Miracle Of Paper', 
+                desc: 'ผลงานรีไซเคิลจากกระป๋องโลหะและกระป๋องอลูมิเนียม (เช่น กระป๋องน้ำอัดลม, กระป๋องปลากระป๋อง) สามารถเปลี่ยนเป็นของใช้และของตกแต่งบ้านได้หลากหลาย อาทิ ที่ใส่เครื่องเขียน, แจกันดอกไม้, เชิงเทียน, กระถางต้นไม้, และที่ให้อาหารนก ซึ่งช่วยลดขยะ เพิ่มมูลค่า และสร้างสรรค์สไตล์วินเทจหรือคันทรี',
+                links: { yt:'https://www.youtube.com/watch?v=woeJs60GmpU' ,web: 'https://www.jeab.com/home-living/how-to/vertical-garden-make-from-cans/'},
+                img: 'img/Paper/pol.jpg'
+            },
+            { 
+                catId: 3, 
+                title: 'โมบาบกังหันจากกระป๋อง', 
+                creator: 'recicladocreativo', 
+                desc: ' โมบายกังหันจากกระป๋องน้ำอัดลมหรือเบียร์เป็นงาน DIY ที่ทำได้ง่ายจากวัสดุเหลือใช้ โดยการตัดกระป๋องเป็นแฉกแล้วบิดให้เป็นใบพัด ใช้ลวดทำแกนหมุนเพื่อเป็นโมบายตกแต่งสวนหรือบ้าน อุปกรณ์สำคัญ ได้แก่ กระป๋องอลูมิเนียม, มีดคัตเตอร์หรือกรรไกรตัดโลหะ, ลวด, คีม และแบบวาดลายหนังสือที่สวยงามและใช้งานสะดวก ',
+                links: {  yt: 'https://www.youtube.com/watch?v=-SOgcEVZ8Yk', web: 'https://share.google/KcC3jGw71gUMCfiVj' },
+                img: 'img/Can/Can.jpg'
+            },
+			 { 
+                catId: 3, 
+                title: 'แก้วนํ้าจากกระป๋องเหลือใช้', 
+                creator: 'naynum num ', 
+                desc: ' การทำแก้วน้ำจากกระป๋องเหลือใช้ (เช่น กระป๋องน้ำอัดลม, เบียร์, กาแฟ) เป็นแนวทาง DIY ที่ง่ายและสร้างสรรค์ ช่วยลดขยะและนำกลับมาใช้ใหม่ได้ โดยใช้เพียงที่เปิดฝากระป๋องอเนกประสงค์ตัดฝาออกให้ขอบเรียบไม่คม ล้างทำความสะอาด ก็ได้แก้วน้ำเบา ไม่แตก และเย็นเร็ว เหมาะสำหรับใช้สอย ',
+                links: {  yt: 'https://www.youtube.com/watch?v=luFTsDuKiXE', web: 'https://share.google/DXdUIpooBccArSrBA' },
+                img: 'img/Can/Glass.jpg'
+            },
+			{
+			 catId: 3, 
+                title: 'กระถางต้นไม้จากกระป๋อง', 
+                creator: 'Miracle Of Paper', 
+                desc: 'ไอเดียเจ๋งๆ นำเอากระป๋อง Share a coke มาตกแต่งบ้าน ทำเป็นสวนแนวตั้งสวยๆ ซึ่งวิธีทำก็ไม่ยากอะไรมากค่ะ หามุมกำแพงโล่งๆ ในบ้านของคุณที่จะทำสวนแนวตั้ง แล้วนำไม้แท่งกลมยาวสองท่อนมาติดลงไปเป็นโครงเสาที่กำแพงแนวนอน',
+                links: { web: 'https://www.jeab.com/home-living/how-to/vertical-garden-make-from-cans/'},
+                img: 'img/Can/pol.jpg'
+            },
+			{
+			 catId: 3, 
+                title: 'รถตุ๊กๆกระป๋อง', 
+                creator: 'ชัยยุทธ อัครภูวดล', 
+                desc: 'รถตุ๊กตุ๊กจำลองจากกระป๋อง (Tuk-Tuk Cans Model) เป็นงานแฮนด์เมด (Handmade) 100% ประดิษฐ์จากกระป๋องเบียร์หรือน้ำอัดลมรีไซเคิล เช่น กระป๋องช้างหรือสิงห์ เหมาะสำหรับสะสม ตกแต่งบ้าน หรือเป็นของที่ระลึกไทย แข็งแรงทนทาน น้ำหนักเบา ขนาดพกพาประมาณ 5.5x12.5x7.5 ซม.',
+                links: { web: 'https://108keajononline.blogspot.com/2012/12/blog-post_10.html'},
+                img: 'img/Can/car.jpg'
+            },
+			{
+			 catId: 3, 
+                title: 'ไอเดียจากกระป๋อง', 
+                creator: 'นิติพัฒน์', 
+                desc: 'ผลงานกล้องจากกระป๋องที่เด่นชัดคือ กล้องแยกแสงสเปกตรัม (กล้องสายรุ้ง) ที่ประดิษฐ์จากกระป๋องน้ำอัดลมและแผ่นซีดี ใช้หลักการหักเหและกระจายแสงผ่านแผ่นซีดีเพื่อมองเห็นแสงเป็น 7 สี เป็นกิจกรรมการเรียนรู้เรื่ององค์ประกอบแสงขาวที่สร้างสรรค์และใช้วัสดุเหลือใช้ให้เกิดประโยชน์ ',
+                links: { web: 'https://www.pinterest.com/pin/590464201119663231/'},
+                img: 'img/Can/gop.jpg'
+            },
+			{
+			 catId: 3, 
+                title: 'ตัวการ์ตูนสุดฮิตจากกระป๋อง', 
+                creator: 'Makaonล', 
+                desc: 'ตุ๊กตากระป๋องรีไซเคิลจากศิลปินชาวญี่ปุ่น (Makaon) เป็นการนำกระป๋องน้ำดื่ม กระป๋องเบียร์ และกระป๋องน้ำอัดลมที่ไม่ใช้แล้วมาดัดแปลงเป็นตัวการ์ตูนสุดฮิตที่มีรายละเอียดสวยงาม แข็งแรง และมีสีสันอันเป็นเอกลักษณ์ เช่น Mario, Pikachu, Hello Kitty, Totoro, Batman และ Woody จาก Toy Story ',
+                links: { web: 'https://www.sanook.com/campus/1369485/'},
+                img: 'img/Can/godji.jpg'
+            },
+			 
+            { 
+                catId: 4, 
+                title: 'ผลงานจากเศษโลหะช้อนส้อม ', 
+                creator: ' Hybrid Art Collectors', 
+                desc: 'นำมาแปลงเป็นนกใครจะไปคิดว่าแค่ช้อนส้อมเครื่องครัวเหล่านี้ จนกลายมาเป็นผลงานศิลปะที่ดูสวยงามเลยทีเดียว',
+                links: { fb: 'https://www.facebook.com/hybridartcollectors/posts/%E0%B8%9C%E0%B8%A5%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B9%80%E0%B8%A8%E0%B8%A9%E0%B9%82%E0%B8%A5%E0%B8%AB%E0%B8%B0%E0%B8%8A%E0%B9%89%E0%B8%AD%E0%B8%99%E0%B8%AA%E0%B9%89%E0%B8%AD%E0%B8%A1-%E0%B8%AA%E0%B8%B9%E0%B9%88%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%A8%E0%B8%B4%E0%B8%A5%E0%B8%9B%E0%B8%B0%E0%B8%99%E0%B8%81%E0%B8%99%E0%B9%89%E0%B8%AD%E0%B8%A2%E0%B8%99%E0%B9%88%E0%B8%B2%E0%B8%A3%E0%B8%B1%E0%B8%81-%E0%B8%9C%E0%B8%A5%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%A3%E0%B8%B5%E0%B9%84%E0%B8%8B%E0%B9%80%E0%B8%84%E0%B8%B4%E0%B8%A5%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B9%80%E0%B8%A8%E0%B8%A9%E0%B9%82%E0%B8%A5%E0%B8%AB%E0%B8%B0%E0%B9%80%E0%B8%AB%E0%B8%A5%E0%B8%B7%E0%B8%AD%E0%B9%83/2703680076546262/', web: 'https://share.google/G3UPJBhvRrwjjg3A8' },
+                img: 'img/Metal/Fork.jpeg'
+            },
+			{ 
+                catId: 4, 
+                title: 'ผลงานเก่าๆครับ โคมไฟจากเศษเหล็กเหลือใช้', 
+                creator: 'Dae Shop DIY ', 
+                desc: ' โคมไฟจากเศษเหล็กเหลือใช้เป็นงานศิลปะแนว Industrial Loft ที่เปลี่ยนเศษวัสดุไร้ค่าให้เป็นของแต่งบ้านดีไซน์เท่ มีเอกลักษณ์เฉพาะตัวสูง ช่วยเพิ่มมูลค่าวัสดุได้กว่า 100 เท่า โดยนำชิ้นส่วนต่างๆ เช่น เฟือง โซ่ เหล็กฉาก หรือท่อมาเชื่อมต่อกันเป็นโคมไฟตั้งโต๊ะหรือตั้งพื้น ',
+                links: { fb: 'https://www.facebook.com/photo/?fbid=2703680053212931&set=a.792309525588946&__cft__[0]=AZbx8H5eJZ6U4QoAtl41kXTGQuIPK9ExWuS8TFyEjrzVeAGceYde-0VuZb2aOrOzsfbuKJY_WhH-gRbnpZWhMAkP5DRpDMrXMZv8d9cb8AV9_rTt47ERntcsm5L3pFgvrZnbkv_ObNuBSJM_i26YMJo1BIa7CKD_W6V2h_6bOEwyiQ&__tn__=EH-R', web: 'https://www.google.com/search?q=%E0%B8%9C%E0%B8%A5%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%81%E0%B9%88%E0%B8%B2%E0%B9%86%E0%B8%84%E0%B8%A3%E0%B8%B1%E0%B8%9A+%E0%B9%82%E0%B8%84%E0%B8%A1%E0%B9%84%E0%B8%9F%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B9%80%E0%B8%A8%E0%B8%A9%E0%B9%80%E0%B8%AB%E0%B8%A5%E0%B9%87%E0%B8%81%E0%B9%80%E0%B8%AB%E0%B8%A5%E0%B8%B7%E0%B8%AD%E0%B9%83%E0%B8%8A%E0%B9%89&rlz=1C1VDKB_thTH1178TH1179&oq=&gs_lcrp=EgZjaHJvbWUqCQgAECMYJxjqAjIJCAAQIxgnGOoCMgkIARAjGCcY6gIyCQgCECMYJxjqAjIJCAMQIxgnGOoCMgkIBBAjGCcY6gIyCQgFECMYJxjqAjIJCAYQIxgnGOoCMgkIBxAjGCcY6gLSAQkyMTM1ajBqMTWoAgiwAgHxBW1K5llRkQY8&sourceid=chrome&ie=UTF-8' },
+                img:'img/Metal/light.jpg'
+            },
+			{
+			    catId: 4, 
+                title: ' ไอเดีย เจ๋งๆ', 
+                creator: 'Nancy Musice', 
+                desc: ' ผลงานจากโลหะเหลือใช้เป็นการนำเศษเหล็ก อะลูมิเนียม หรือสแตนเลสที่เหลือจากอุตสาหกรรมและของใช้ในบ้าน มาแปรรูปด้วยการเชื่อม ตัด หรือดัดแปลงให้เป็นของใช้และงานศิลปะใหม่ เช่น โต๊ะ เก้าอี้ โคมไฟ รูปปั้นสัตว์ (นก, ม้า) หุ่นยนต์จิ๋ว และของตกแต่งบ้านดีไซน์เก๋ๆ ช่วยลดขยะ เพิ่มมูลค่า และสร้างรายได้ ',
+                links: { web: 'https://www.pinterest.com/gookidgootum/%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%94%E0%B8%A9%E0%B8%90%E0%B8%82%E0%B8%AD%E0%B8%87%2B%E0%B8%A3%E0%B9%84%E0%B8%8B%E0%B9%80%E0%B8%84%E0%B8%A5/' },
+                img:'img/Metal/pob.jpg'
+            },
+			{
+			    catId: 4, 
+                title: 'เก้าอี้จากโลหะ', 
+                creator: 'Celeste Hurinenko', 
+                desc: ' ผลงานเก้าอี้จากโลหะเหลือใช้ เป็นการนำเศษเหล็ก โครงสร้างเก่า หรือวัสดุโลหะจากยานพาหนะ เช่น โช้ครถยนต์, เหล็กเส้น, หรือท่อเหล็ก มาเชื่อมและประกอบใหม่เป็นเฟอร์นิเจอร์สไตล์ Loft หรือ DIY ที่มีเอกลักษณ์ แข็งแรงทนทาน ช่วยลดขยะ เพิ่มมูลค่าเศษวัสดุ และสร้างรายได้',
+                links: { web: 'https://www.pinterest.com/majorscorpionking/diy-%E0%B9%80%E0%B8%A8%E0%B8%A9%E0%B9%80%E0%B8%AB%E0%B8%A5%E0%B8%81/' },
+                img:'img/Metal/gre.jpg'
+            },
+			{
+			    catId: 4, 
+                title: 'ผลงานศิลปะจากโลหะ', 
+                creator: 'Matt Wilson', 
+                desc: ' ผลงานศิลปะจากโลหะเป็นการสร้างสรรค์ชิ้นงานที่มีความแข็งแกร่ง ทนทาน และมีเอกลักษณ์เฉพาะตัวสูง เช่น ประติมากรรมหุ่นยนต์จากเศษเหล็ก อะไหล่รถยนต์เหลือใช้, งานดุนลายแผ่นโลหะ (ทองแดง ทองเหลือง), และเครื่องประดับผนังที่เน้นความพริ้วไหวเหมือนธรรมชาติ เป็นการผสมผสานงานฝีมือ เทคนิคการเชื่อม และความคิดสร้างสรรค์เพื่อเปลี่ยนวัสดุเหลือใช้ให้เป็นชิ้นงานที่มีมูลค่าสูง',
+                links: { web: 'https://sapparot.co/2018/10/31/cutlery-animal-sculptures-matt-wilson/' },
+                img:'img/Metal/mro.jpg'
+            },
+			{
+			    catId: 4, 
+                title: 'ผลงานศิลปะ โลหะ', 
+                creator: 'NOOM ช่างเหล็ก งานฝีมือ', 
+                desc: ' ผลงานศิลปะจากโลหะเป็นการสร้างสรรค์ชิ้นงานที่มีความแข็งแกร่ง ทนทาน และมีเอกลักษณ์เฉพาะตัวสูง เช่น ประติมากรรมหุ่นยนต์จากเศษเหล็ก อะไหล่รถยนต์เหลือใช้, งานดุนลายแผ่นโลหะ (ทองแดง ทองเหลือง), และเครื่องประดับผนังที่เน้นความพริ้วไหวเหมือนธรรมชาติ เป็นการผสมผสานงานฝีมือ เทคนิคการเชื่อม และความคิดสร้างสรรค์เพื่อเปลี่ยนวัสดุเหลือใช้ให้เป็นชิ้นงานที่มีมูลค่าสูง',
+                links: { yt:'https://www.youtube.com/playlist?list=PLwNQsrOEKM4KdyCUvAgrzkb6KEZEBGEOl',web: 'https://www.youtube.com/playlist?list=PLwNQsrOEKM4KdyCUvAgrzkb6KEZEBGEOl' },
+                img:'img/Metal/mord.jpg'
+            },
+			
+			{ 
+                catId: 5, 
+                title: 'วิธีทำกระโปรงจากถุงพลาสติก', 
+                creator: 'muslyn_1556 ', 
+                desc: ' การทำกระโปรงจากถุงพลาสติกเป็นแนวคิดรีไซเคิลที่ทำได้เอง เช่น การใช้ถุงขยะสีต่างๆ มาตัดเป็นเส้นแล้วมัดหรือเย็บติดกับโครงเชือก/ลวดที่เอว หรือการทำเป็นระบาย โดยนำถุงพลาสติกมาตัดเป็นชิ้นๆ แล้วนำมาเย็บติดกันให้เป็นทรงกระโปรง เน้นความสวยงามและรูปทรงที่พองฟู',
+                links: {  tt: 'https://www.tiktok.com/@muslyn_1556/video/7324243568183217414', web: 'https://share.google/0WuuGW6gwKQ0r5wjE' },
+                img: 'img/BAg/Set.jpeg'
+            },
+			 { 
+                catId: 5, 
+                title: 'ดอกไม้จากถุงนม', 
+                creator: 'ครูเค้ก DIY Crafts ', 
+                desc: ' งานประดิษฐ์จากวัสดุเหลือใช้ (TRL 7) ที่นำถุงนมโรงเรียนสีขาวมาทำความสะอาด ตัด และพับเป็นกลีบดอกไม้ ช่วยลดขยะและมลพิษ ขั้นตอนหลักคือล้าง ตัดขอบเป็นสี่เหลี่ยมผืนผ้า ซอยเป็นเส้นเล็กๆ พันรอบไม้เสียบลูกชิ้นเป็นเกสรและกลีบ ใช้ตกแต่งบ้านหรือทำเป็นรายได้เสริม',
+                links: {  yt: 'https://www.youtube.com/watch?v=_ruLQoiNQU4', web: 'https://share.google/0WuuGW6gwKQ0r5wjE' },
+                img: 'img/BAg/Flower.jpeg'
+            },
+			{ 
+                catId: 5, 
+                title: 'รองเท้าจากถุงก๊อปแกร๊ป', 
+                creator: 'Sanook! Home ', 
+                desc: ' ถักเป็นรองเท้า รองเท้าแตะแบบเปิดหลังเท้า เหมาะสำหรับเดินเล่นนอกบ้าน พลาสติกก็น่าจะเป็นอีกหนึ่งวัสดุชั้นดีที่นำมาถักเป็นรองเท้าได้',
+                links: {   web: 'https://www.sanook.com/women/201553/' },
+                img: 'img/BAg/rog.jpg'
+            },
+			{ 
+                catId: 5, 
+                title: 'ผลิตภัณฑ์จากขยะรีไซเคิล ลดโลกร้อน ', 
+                creator: 'TO BE NUMBER ONE', 
+                desc: ' ผ้ากันเปื้อนที่ทำจากถุงน้ำยาปรับผ้านุ่ม น้ำหนักเบา ทำความสะอาดง่าย ไม่ต้องซัก เพียงแค่ใช้เศษผ้าสะอาดเช็ดให้แห้ง ก็สามารถนำกลับมาใช้งานต่อได้เลย สะดวก สบาย ไม่เสียเวลาารตัดเย็บผ้ากันเปื้อนจากถุงน้ำยาปรับผ้านุ่มนั้น ไม่ได้มีความยุ่งยากสลับซับซ้อนแต่อย่างใด วัสดุหาได้ในชุมชน อีกทั้งยังสามารถออกแบบดีไซน์ ลวดลาย สีสัน ตามเฉดสีของถุงน้ำยาปรับผ้านุ่มแต่ละยี่ห้อ และตกแต่งด้วยรูปการ์ตูน เช่น โดราเอม่อน ซุปเปอร์แมน คิตตี้ ให้ดูน่ารัก เก๋ไก๋ สะดุดตา น่ามอง เพิ่มมูลค่าสินค้า',
+                links: {   web: 'https://www.khaosod.co.th/technologychaoban/techno-news/article_202736' },
+                img: 'img/BAg/lok.jpg'
+            },
+			{ 
+                catId: 5, 
+                title: 'ตุ๊กตาเจ้าหญิงถุงพลาสติก ', 
+                creator: 'veena nana', 
+                desc: 'สร้างสรรค์ขึ้นจากวัสดุเหลือใช้ที่หาได้ทั่วไปอย่างถุงพลาสติกและหนังยาง เอามาเล่นหมุนให้กระโปรงปลิวไสว หรือจะทำเป็นหุ่นละครไว้เล่านิทานก็ได้',
+                links: { yt:'https://www.youtube.com/watch?v=pGuu2sb6EmE',  web: 'http://www.108kids.com/archives/17320https://www.youtube.com/watch?v=pGuu2sb6EmE' },
+                img: 'img/BAg/lot.jpg'
+            }, 
+			{
+			catId: 5, 
+                title: 'ถาดรองภาชนะจากพลาสติก ', 
+                creator: 'Sanook! Home', 
+                desc: 'ถาดรองที่ทำจากเส้นพลาสติกสานกันบ้าง การจะทำให้ถาดรองมีความน่าสนใจคงต้องเริ่มตั้งแต่การคัดเลือกสีเส้นพลาสติก แล้วใช้ฝีมือที่อาจจะมีอยู่น้อยนิดค่อยๆ ถักเป็นถาดรอง',
+                links: { web: 'https://www.sanook.com/women/201553/' },
+                img: 'img/BAg/jin.jpg'
+            },
+			{ 
+                catId: 6, 
+                title: 'DIY ทำถังขยะจิ๋วน่ารักๆจากกระดาษลังรีไซเคิล', 
+                creator: 'แม่เนย น้องพอส DIY ', 
+                desc: ' ถังขยะจิ๋วจากกล่องกระดาษลังเป็นงาน DIY ที่นำกระดาษลูกฟูกเหลือใช้มาแปรรูปเป็นถังขยะขนาดเล็ก (เช่น ซม.) เน้นความแข็งแรงทนทาน ใส่ขยะแห้งได้จริง เหมาะสำหรับวางบนโต๊ะทำงานหรือในห้องนอน สามารถตกแต่งด้วยกระดาษสี เทปลายการ์ตูน และใช้กาวร้อนประกอบเพื่อความแน่นหนา',
+                links: {  yt: 'https://www.youtube.com/watch?v=Q2NRh_AvJ9I', web: 'https://share.google/Avvj28BzNQCj5zCzJ' },
+                img: 'img/crate/rubbishbih.jpg'
+            },
+			{ 
+                catId: 6, 
+                title: 'ชั้นใส่ของ', 
+                creator: 'ห้องสื่อปฐมวัยไฮโซ By ครูเมย ', 
+                desc: 'งาน DIY ที่เน้นการนำกล่องพัสดุหรือลังเหลือใช้มาประยุกต์ใหม่ เช่น ทำชั้นวางของติดผนัง, ตู้ล็อคเกอร์เล็ก, หรือกล่องแบ่งช่อง, เพิ่มความแข็งแรงด้วยกาวและกระดาษกาว ตัดแต่งเป็นรูปทรงต่างๆ (เช่น แอปเปิ้ล, บ้าน) ตกแต่งด้วยสีหรือกระดาษห่อของขวัญเพื่อความสวยงามและใช้งานได้จริง',
+                links: {  fb: 'https://www.facebook.com/teachingmediahisobykrumay/posts/%E0%B8%8A%E0%B8%B1%E0%B9%89%E0%B8%99%E0%B9%83%E0%B8%AA%E0%B9%88%E0%B8%82%E0%B8%AD%E0%B8%87-%E0%B9%83%E0%B8%AA%E0%B9%88%E0%B8%9C%E0%B8%A5%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B9%80%E0%B8%A3%E0%B8%B5%E0%B8%A2%E0%B8%99-%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B8%A5%E0%B8%B1%E0%B8%87%E0%B8%81%E0%B8%A3%E0%B8%B0%E0%B8%94%E0%B8%B2%E0%B8%A9-%E0%B8%A1%E0%B8%B5%E0%B9%80%E0%B8%9B%E0%B9%87%E0%B8%99%E0%B8%AD%E0%B8%B8%E0%B8%9B%E0%B8%81%E0%B8%A3%E0%B8%93%E0%B9%8C%E0%B8%95%E0%B8%81%E0%B9%81%E0%B8%95%E0%B9%88%E0%B8%87%E0%B8%88%E0%B8%B3%E0%B8%AB%E0%B8%99%E0%B9%88%E0%B8%B2%E0%B8%A2-%E0%B8%9C%E0%B8%B5%E0%B9%80%E0%B8%AA%E0%B8%B7%E0%B9%89%E0%B8%AD-%E0%B8%94%E0%B8%AD%E0%B8%81%E0%B9%84/1046189110844680/', web: 'https://share.google/6ON6TB7WVDCiJvo2j' },
+                img: 'img/crate/shelf.jpeg'
+            },
+			 {
+    
+                catId: 6, 
+                title: '16 ไอเดียกระดาษลังเจ๋งๆสนุก', 
+                creator: 'DIY 5 นาทีฉบับวัยใส', 
+                desc: 'เน้นเปลี่ยนกล่องเหลือใช้เป็นของเล่นสร้างสรรค์ ของใช้ในบ้าน และที่นอนสัตว์เลี้ยง เช่น บ้านจำลอง, รถของเล่น, ที่ลับเล็บแมว, หรือชั้นวางของ ช่วยฝึกทักษะและลดขยะได้สูงสุด',
+                links: { yt: 'https://www.youtube.com/watch?v=N5Na33ubZ4Q', web: 'https://www.google.com/imgres?imgurl=https://i.ytimg.com/vi/N5Na33ubZ4Q/maxresdefault.jpg&tbnid=vxQA1MiEFolgzM&vet=1&imgrefurl=https://www.youtube.com/watch?v%3DN5Na33ubZ4Q&docid=uy7aBr6N864tCM&w=1280&h=720&hl=th&source=sh/x/im/m1/5&kgs=15fbb52395857701&shem=isst,shrtsdl&utm_source=isst,shrtsdl,sh/x/im/m1/5' },
+                img: 'img/crate/house.jpg'
+            },
+			{ 
+                catId: 6, 
+                title: 'ทำตู้ลิ้นชักจากลังกระดาษ', 
+                creator: 'Aminor Channel ', 
+                desc: 'การประดิษฐ์ตู้ลิ้นชักจากลังกระดาษเหลือใช้เป็นผลงาน DIY ยอดนิยมที่ช่วยลดขยะ เพิ่มพื้นที่จัดเก็บของให้เป็นระเบียบ และประหยัดค่าใช้จ่าย โดยนิยมนำกล่องกระดาษมาออกแบบเป็นตู้เก็บเอกสาร โต๊ะเครื่องเขียน ตู้เก็บของจิปาถะ หรือตู้เสื้อผ้าตุ๊กตา ตกแต่งด้วยการหุ้มกระดาษสวยงาม แปะลาย หรือทาสี',
+                links: {  yt: 'https://www.youtube.com/watch?v=DqbDxfNWh6Y', web: 'https://www.youtube.com/watch?v=DqbDxfNWh6Y' },
+                img: 'img/crate/toik.jpg'
+            },
+			{ 
+                catId: 6, 
+                title: 'ของตกแต่ง จาก ลังกระดาษไม่ได้ใช้งาน', 
+                creator: 'Pantip', 
+                desc: 'เปลี่ยนลังกระดาษเหลือใช้เป็นของตกแต่งและของใช้ในบ้านสุดสร้างสรรค์ เช่น กล่องจัดระเบียบหุ้มผ้า, ชั้นวางของติดผนัง, ที่ลับเล็บแมว, โคมไฟกระดาษ, และกรอบรูป โดยใช้กาว, กรรไกร, ผ้าหรือกระดาษห่อของขวัญ เพื่อเพิ่มความสวยงามและยืดอายุการใช้งาน',
+                links: { web: 'https://www.trueplookpanya.com/knowledge/content/73742/-diyhom-diy-' },
+                img: 'img/crate/iot.jpg'
+            },
+			{ 
+                catId: 6, 
+                title: 'ชั้นวางของจากกล่องกระดาษ', 
+                creator: 'SK', 
+                desc: 'เชั้นสำหรับวางของจุกจิก เลือกใช้กล่องกระดาษที่สามารถหักงอได้ นำมาตัดแบ่งเป็นขิ้นส่วนต่าง ๆ จากนั้นประกอบร่างให้เป็นรูปหัวใจ ออกแบบช่องเล็กช่องน้อยตามความต้องการ',
+                links: {  yt: 'https://www.youtube.com/watch?v=DqbDxfNWh6Y', web: 'https://pantip.com/topic/35379336' },
+                img: 'img/crate/firn.jpg'
+            },
+			
+			{
+    
+                catId: 7, 
+                title: 'ชุดรีไซเคิล จากถุงขนม', 
+                creator: 'ของขวัญ บ้านแม่สุ DIY ง่ายนิดเดียว', 
+                desc: 'ชุดรีไซเคิลจากถุงขนม เป็นการนำซองพลาสติกสีสันสดใสที่ใช้แล้ว (Multi-Layer Plastic: MLP) มาทำความสะอาด ตัด เย็บ หรือเชื่อมติดกันด้วยกาว/แม็ก เพื่อสร้างเป็นชุดแฟชั่นที่โดดเด่น มีจุดเด่นคือความอ่อนตัวขึ้นรูปง่าย น้ำหนักเบา เหมาะสำหรับกิจกรรมสร้างสรรค์และงานประกวดชุดรีไซเคิล',
+                links: { fb: 'https://www.facebook.com/KhongkhwanbySu/posts/%E0%B9%84%E0%B8%AD%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2-%E0%B8%8A%E0%B8%B8%E0%B8%94%E0%B8%A3%E0%B8%B5%E0%B9%84%E0%B8%8B%E0%B9%80%E0%B8%84%E0%B8%B4%E0%B8%A5-%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B8%96%E0%B8%B8%E0%B8%87%E0%B8%82%E0%B8%99%E0%B8%A1%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%81%E0%B8%A7%E0%B8%94%E0%B8%8A%E0%B8%B8%E0%B8%94%E0%B8%A3%E0%B8%B5%E0%B9%84%E0%B8%8B%E0%B9%80%E0%B8%84%E0%B8%B4%E0%B8%A5-%E0%B8%96%E0%B8%B8%E0%B8%87%E0%B8%82%E0%B8%99%E0%B8%A1-%E0%B8%A3%E0%B8%B5%E0%B9%84%E0%B8%8B%E0%B9%80%E0%B8%84%E0%B8%B4%E0%B8%A5-%E0%B8%82%E0%B8%A2%E0%B8%B0-%E0%B8%8A%E0%B8%B8%E0%B8%94%E0%B8%A3%E0%B8%B5%E0%B9%84%E0%B8%8B%E0%B9%80%E0%B8%84%E0%B8%B4%E0%B8%A5/853036266854949/', web: 'https://share.google/kvsNba8G5Grbc0zxh' },
+                img: 'img/pastrybag/set.jpeg'
+            },
+			{ 
+                catId: 7, 
+                title: 'ดัดแปลง "ถุงขนม" เป็น "ถุงหิ้ว" เก๋ไก๋', 
+                creator: 'ครูเค้ก DIY Crafts ', 
+                desc: 'ทำความสะอาด ลอกสติกเกอร์ส่วนเกินออก แล้วพับปากถุงด้านบนลงมาประมาณ 2-3 นิ้ว เพื่อสร้างความแข็งแรง ก่อนจะเจาะรูแล้วใส่หูหิ้วทำจากเชือกป่าน ริบบิ้น หรือเศษผ้า ช่วยเพิ่มมูลค่า รักษ์โลก และได้กระเป๋าใบเล็กที่มีสไตล์เฉพาะตัว ',
+                links: { web: 'https://www.google.com/imgres?imgurl=https://i.pinimg.com/originals/c9/43/7b/c9437bcc14eb000d98a94c137af92c37.jpg&tbnid=oqkhZkpkK23jxM&vet=1&imgrefurl=https://www.pinterest.com/wanwisawich/diy-%25E0%25B8%2596%25E0%25B8%2587%25E0%25B8%259E%25E0%25B8%25A5%25E0%25B8%25B2%25E0%25B8%25AA%25E0%25B8%2595%25E0%25B8%2581/&docid=A_n1eTlHbM-iCM&w=488&h=500&hl=th&source=sh/x/im/m1/5&kgs=67cab82c686a9782&shem=isst,shrtsdl&utm_source=isst,shrtsdl,sh/x/im/m1/5#sv=CAMSXhoyKhBlLVY1cU5DYUY0RDhOMUtNMg5WNXFOQ2FGNEQ4TjFLTToON2JrXzBFZ18xSVJQME0gBCokCg5vcWtoWmtwa0syM2p4TRIQZS1WNXFOQ2FGNEQ4TjFLTRgAMAEYByDUjpGvAjABSggQAhgCIAIoAg ' },
+                img: 'img/pastrybag/bag.jpg'
+            },
+			{
+    
+                catId: 7, 
+                title: 'สานที่ใส่แก้วน้ำจากซองกาแฟ', 
+                creator: 'Rin Handmade', 
+                desc: 'การสานที่ใส่แก้วน้ำจากซองกาแฟเป็นงานฝีมือ DIY เพื่อสิ่งแวดล้อมที่นำซองกาแฟใช้แล้วมาทำความสะอาด ตัดขอบ พับเป็นเส้น แล้วสานเป็นโครงตะกร้าใส่แก้วน้ำที่มีความแข็งแรง ทนทาน และมีลวดลายสวยงามเป็นเอกลักษณ์ ช่วยลดขยะและเพิ่มมูลค่าให้กับเศษวัสดุ',
+                links: {yt:'https://www.youtube.com/watch?v=gqQ5MRwwfk4', web: 'https://www.youtube.com/watch?v=gqQ5MRwwfk4' },
+                img: 'img/pastrybag/fault.jpg'
+            },
+			{
+    
+                catId: 7, 
+                title: 'ที่แขวนเสื้อจากถุงพลาสติก', 
+                creator: 'Sanook! Home', 
+                desc: 'การทำที่แขวนเสื้อจากถุงพลาสติกเป็นแนวทาง DIY รีไซเคิลที่ช่วยลดขยะ โดยการนำถุงก๊อปแก๊ปเก่ามาทำความสะอาด พัน หรือสานเป็นเส้นยาวเพื่อใช้แขวนเสื้อผ้า หรือทำเป็นไม้แขวนเสื้อเครื่องประดับ ช่วยจัดระเบียบตู้เสื้อผ้า ประหยัดพื้นที่ และลดโลกร้อนได้เป็นอย่างดี ',
+                links: { web: 'https://www.sanook.com/women/201553/' },
+                img: 'img/pastrybag/roy.jpg'
+            },
+			{
+    
+                catId: 7, 
+                title: 'ผ้ากันเปื้อนถุงขนม', 
+                creator: 'GRAND UNITY', 
+                desc: 'การทำที่แขวนเสื้อจากถุงพลาสติกเป็นแนวทาง DIY รีไซเคิลที่ช่วยลดขยะ โดยการนำถุงก๊อปแก๊ปเก่ามาทำความสะอาด พัน หรือสานเป็นเส้นยาวเพื่อใช้แขวนเสื้อผ้า หรือทำเป็นไม้แขวนเสื้อเครื่องประดับ ช่วยจัดระเบียบตู้เสื้อผ้า ประหยัดพื้นที่ และลดโลกร้อนได้เป็นอย่างดี ',
+                links: { fb:'https://www.facebook.com/photo/?fbid=967567319929790&set=pcb.967567363263119&__cft__[0]=AZZg6rPPmc2WL7HXRepGTVW-KR7YFd5lHtu86kd1hszwKJFqZMDUTpXd7ZAOPhEbeJWtoqEJ4-ztwB_wtacRNmWceJoL2i1_wC5VdzvdcVbThrW-AXgcm-aFI8cnlsUP2FC6bt7_Mkfojox88ehuCRRhwGkZYfHOrOK3O0vBM20PHw&__tn__=*b0H-R',web: 'https://www.facebook.com/GrandUnityDevelopment/posts/%E0%B8%9C%E0%B9%89%E0%B8%B2%E0%B8%81%E0%B8%B1%E0%B8%99%E0%B9%80%E0%B8%9B%E0%B8%B7%E0%B9%89%E0%B8%AD%E0%B8%99%E0%B8%96%E0%B8%B8%E0%B8%87%E0%B8%82%E0%B8%99%E0%B8%A1-%E0%B9%84%E0%B8%AD%E0%B9%80%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B8%87%E0%B9%88%E0%B8%B2%E0%B8%A2%E0%B9%86-%E0%B9%81%E0%B8%95%E0%B9%88%E0%B9%84%E0%B8%94%E0%B9%89%E0%B8%84%E0%B8%B8%E0%B8%93%E0%B8%A0%E0%B8%B2%E0%B8%9E-%E0%B9%81%E0%B8%96%E0%B8%A1%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%AB%E0%B8%A2%E0%B8%B1%E0%B8%94%E0%B8%94%E0%B9%89%E0%B8%A7%E0%B8%A2%E0%B8%99%E0%B8%B0-%E0%B8%8A%E0%B8%B2%E0%B8%A7%E0%B9%81%E0%B8%81%E0%B8%A3%E0%B8%99%E0%B8%94%E0%B9%8C-%E0%B8%A2%E0%B8%B9-%E0%B8%AA%E0%B8%99%E0%B9%83%E0%B8%88%E0%B8%A5%E0%B8%AD/967567363263119/' },
+                img: 'img/pastrybag/dik.jpeg'
+            },
+			{
+    
+                catId: 7, 
+                title: 'พวงมาลัย', 
+                creator: 'เปรียว ศักดิ์ดาวุฒิ', 
+                desc: 'สิ่งประดิษฐ์จากขยะรีไซเคิล โดยนำถุงนมที่ดื่มหมดแล้วมาทำความสะอาดและพับเป็นกลีบดอกไม้ (เช่น ดอกกุหลาบ) ร้อยเรียงเป็นพวงมาลัย มีความสวยงาม ทนทาน เก็บได้นาน และนิยมนำมาใช้ไหว้พระ บูชาสิ่งศักดิ์สิทธิ์ หรือเป็นของที่ระลึก ช่วยลดขยะและสร้างรายได้ ',
+                links: {web: 'https://inskru.com/idea/-MHUH8aQPFV2kipCFDfq/' },
+                img: 'img/pastrybag/loi.jpg'
+            },
+			{ 
+                catId: 8, 
+                title: 'Star Mobile from Plastic Tubes | DIY Plastic Tube', 
+                creator: 'Rin Handmade ', 
+                desc: 'การทำโมบายดาวจากหลอดพลาสติก (Star Mobile from Plastic Tubes) เป็นงานฝีมือ DIY ที่ใช้หลอดดื่มน้ำมาพับเป็นรูปดาว 5 แฉก แล้วร้อยเรียงเป็นโมบายแขวนตกแต่ง วิธีนี้ช่วยนำวัสดุเหลือใช้มาสร้างสรรค์เป็นของตกแต่งห้องที่สวยงาม มีขั้นตอนหลักคือการพับหลอดให้แบน พับทบเป็นรูปดาว นำมาประกอบกัน และร้อยด้ายหรือเชือกแขวน',
+                links: {yt: 'https://www.youtube.com/watch?v=tmvkCIUFoDo', web: 'https://share.google/nOpG1TeU9p6gmDgFq' },
+                img: 'img/bulb/mobile.jpg'
+            },
+			{ 
+                catId: 8, 
+                title: 'สานตะกร้าจากหลอดพลาสติก', 
+                creator: 'Rin Handmade ', 
+                desc: 'การสานตะกร้าจากหลอดพลาสติกเป็นงานฝีมือ DIY ที่ช่วยลดขยะพลาสติก โดยนำหลอดมาตัด รีดให้แบน หรือสานต่อกันเป็นโครงสร้างที่แข็งแรง ขั้นตอนหลักประกอบด้วยการเตรียมหลอด การสานขึ้นโครงสร้าง (เช่น สานขัดลาย 1:1 หรือ 2:2) และการสานมุมขึ้นเป็นรูปทรงตะกร้าที่สวยงาม ทนทาน สามารถใช้ใส่ของได้จริง ',
+                links: { yt: 'https://www.youtube.com/watch?v=GUZ80aWXjx8', web: 'https://share.google/Nyvt9VmdlBi2DsmYh' },
+                img: 'img/bulb/Takla.png'
+            },
+			{ 
+                catId: 8, 
+                title: 'สานพัดจากหลอดพลาสติก', 
+                creator: 'Rin Handmade', 
+                desc: 'การสานพัดจากหลอดพลาสติกเป็นงานฝีมือ DIY ที่เปลี่ยนหลอดกาแฟเหลือใช้ให้เป็นพัดที่มีความแข็งแรง สีสันสดใส และใช้งานได้จริง ขั้นตอนหลักคือการนำหลอดมาตัดและสานตามลายขัด (เช่น ลายสองหรือลายขัดธรรมดา) แล้วเก็บรายละเอียดขอบให้เรียบร้อย เป็นกิจกรรมช่วยลดโลกร้อนและฝึกทักษะฝีมือ',
+                links: {fb:'https://www.facebook.com/watch/?v=2677579542392483',yt: 'https://www.youtube.com/watch?v=rftzzcLqKOQ', web: 'https://share.google/AtRGsIY57dztRXu7j'},
+                img: 'img/bulb/blow.jpg'
+            },
+			{ 
+                catId: 8, 
+                title: 'โมบายปลาตะเพียนแขวน', 
+                creator: 'el missatge de โมบายปลาตะเพียน', 
+                desc: 'เป็นงานหัตถกรรมไทยที่เป็นสิริมงคล สานจากใบลานหรือผ้า นิยมแขวนหน้าบ้านหรือเหนือเปลเด็กเพื่อความโชคดี ร่ำรวย เงินทองไหลมาเทมา และสุขภาพแข็งแรง มีลักษณะเด่นคือแม่ปลาตัวใหญ่พ่วงลูกปลาตัวเล็ก สื่อถึงความอุดมสมบูรณ์ แข็งแรง ทนทาน',
+                links: {fb:'https://www.facebook.com/photo/?fbid=353866095272682&set=pcb.353866695272622&__cft__[0]=AZYBawZXsuaDYgUhj5L3-sZ5RmBBnQJN_d92_xV7Jsu1aPrqCkvImJ8c3pH3eK11dJyNEpUmJ1qza3DOasW7aoow8fAVSvC7yRyjMTLqAMANtFg-n92I4QZbG3N7CcQcWfpJ_9t2TxRv2hKAdI5kO7wxoSZJSaVkjm4ioGj4qLarGA&__tn__=*b0H-R' ,web: 'https://www.google.com/search?q=%E0%B8%9C%E0%B8%A5%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B8%AB%E0%B8%A5%E0%B8%AD%E0%B8%94&rlz=1C1VDKB_thTH1178TH1179&sca_esv=4e1b0ad867098811&biw=2133&bih=1050&udm=2&sxsrf=ANbL-n7I8w9LGgMJKnU4liIWkfUGHT3qyw%3A1771757896102&ei=SOGaac3xBarf2roP4s_Q6QY&ved=0ahUKEwjNtZnA-OySAxWqr1YBHeInNG0Q4dUDCBQ&uact=5&oq=%E0%B8%9C%E0%B8%A5%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B8%AB%E0%B8%A5%E0%B8%AD%E0%B8%94&gs_lp=Egtnd3Mtd2l6LWltZyIk4Lic4Lil4LiH4Liy4LiZ4LiI4Liy4LiB4Lir4Lil4Lit4LiUSOwfUP4IWNQacAF4AJABAJgBTKABsgKqAQE1uAEDyAEA-AEBmAIAoAIAmAMAiAYBkgcAoAf_AbIHALgHAMIHAMgHAIAIAA&sclient=gws-wiz-img#sv=CAMSXhoyKhBlLWY1YV80N0xkcUdfYnhNMg5mNWFfNDdMZHFHX2J4TToORHNBUFlZbEFraDRiX00gBCokCg40eUFmd2txZHFxUWQyTRIQZS1mNWFfNDdMZHFHX2J4TRgAMAEYByD11o6RCzACSggQAhgCIAIoAg'},
+                img: 'img/bulb/vio.jpeg'
+            },
+		{ 
+                catId: 8, 
+                title: 'ดอกไม้จากหลอด by มายมิ้นท์ Flower From Drinking Straws', 
+                creator: 'Prapassorn Pigulthong', 
+                desc: 'ผลงานดอกไม้จากหลอดพลาสติกเป็นงานประดิษฐ์ DIY ที่น่าสนใจ ช่วยลดขยะและสร้างมูลค่าเพิ่มได้ดีเยี่ยม หลอดดูดสามารถนำมาดัดแปลงเป็นดอกไม้ต่างๆ เช่น ดอกคุณนายตื่นสาย, ดอกเดซี่, ดอกกระเจียว, และดอกกุหลาบ เหมาะสำหรับตกแต่งบ้าน, ทำช่อดอกไม้, หรือเป็นเหรียญโปรยทาน ',
+                links: { yt:'https://www.youtube.com/watch?v=0RuNJR4FrP4web', web:'https://www.youtube.com/watch?v=0RuNJR4FrP4'},
+                img: 'img/bulb/wop.jpg'
+            },
+			{ 
+                catId: 8, 
+                title: 'ดอกไม้จากหลอด ทึ่แขวนตกแต่งฝาผนังจากหลอด by มายมิ้นท์ Hanging on the wall from the straws.', 
+                creator: 'Prapassorn Pigulthong', 
+                desc: 'การทำดอกไม้และที่แขวนตกแต่งฝาผนังจากหลอดพลาสติกเป็นงาน DIY ที่ช่วยลดขยะและสร้างมูลค่าเพิ่ม โดยการนำหลอดมาตัดและดัดเป็นรูปทรงต่างๆ เช่น ดอกคุณนายตื่นสาย ดอกกระเจียว หรือดอกกุหลาบ นำมาประกอบกันเป็นช่อหรือพวงเพื่อแขวนตกแต่งผนังห้องให้สวยงามและดูดีมีสไตล์  ',
+                links: { yt:'https://www.youtube.com/watch?v=-Pt-KP-YFlI', web:'https://www.youtube.com/watch?v=0RuNJR4FrP4'},
+                img: 'img/bulb/uio.jpg'
+            },
+			];
+			const buyingPoints = [
+            { name: "บริษัท สหรักษ์ รีไซเคิล จำกัด (Saharak Recycle Co., Ltd.)", location: "237, ตำบล ตะโกตาพิ อำเภอประโคนชัย บุรีรัมย์ 31140", tel: "094-589-9881", types: "ศูนย์รีไซเคิล(รับซื้อของเก่า)", color: "text-red-600" },
+            { name: "หจก. บุรีรัมย์รีไซเคิล", location: "หมู่ที่ 3 ตำบล แสลงโทน อำเภอประโคนชัย บุรีรัมย์ 31140", tel: "044-784-094", types: "ศูนย์รีไซเคิล(รับซื้อของเก่า", color: "text-blue-600" },
+            { name: "ชัยทวีรีไซเคิล - ชัยทวีพืชผล โกดังบ้านหัวลิง (รับซื้อขยะรีไซเคิล) - รับซื้อของเก่า", location: "161 1 บุรีรัมย์ - นางรอง ตำบล อิสาณ เมือง บุรีรัมย์ 31000", tel: "096-881-3126", types: "ศูนย์รีไซเคิล(รับซื้อของเก่า)", color: "text-green-600" },
+            { name: "พนาวันรีไซเคิล", location: "143 ตำบล ถนนหัก อำเภอนางรอง บุรีรัมย์ 31110",  types: "ศูนย์รีไซเคิล(รับซื้อของเก่า)", color: "text-purple-600" }
+			
+				
+
+        function showPage(page, data = null) {
+            const content = document.getElementById('app-content');
+            window.scrollTo(0, 0);
+
+            if (page === 'home') {
+                content.innerHTML = `
+                    <div class="text-center mb-12 fade-in">
+                        <h1 class="text-4xl font-bold text-green-800 mb-4">เปลี่ยน "ขยะ" ให้กลายเป็น "ผลงาน"</h1>
+                        <p class="text-gray-600 max-w-2xl mx-auto text-lg">เลือกประเภทขยะที่คุณสนใจ เพื่อดูไอเดียการรีไซเคิลสุดสร้างสรรค์จากสมาชิกของเรา</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 fade-in">
+                        ${categories.map(cat => `
+                            <div onclick="showPage('category', ${cat.id})" class="category-card cursor-pointer bg-white rounded-2xl shadow-md overflow-hidden border-b-4 border-transparent hover:border-green-500">
+                                <div class="${cat.color} h-32 flex items-center justify-center text-white text-5xl">
+                                    <i class="fas ${cat.icon}"></i>
+                                </div>
+                                <div class="p-6 text-center">
+                                    <h3 class="text-xl font-bold text-gray-800">${cat.name}</h3>
+                                    <p class="text-sm text-gray-500 mt-2">คลิกเพื่อดูผลงาน</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } 
+            else if (page === 'category') {
+                const category = categories.find(c => c.id === data);
+                const filteredProjects = projects.filter(p => p.catId === data);
+
+                content.innerHTML = `
+                    <div class="mb-8 fade-in">
+                        <button onclick="showPage('home')" class="text-green-600 hover:text-green-800 mb-4 inline-flex items-center">
+                            <i class="fas fa-arrow-left mr-2"></i> กลับหน้าแรก
+                        </button>
+                        <div class="flex items-center space-x-4">
+                            <div class="${category.color} p-4 rounded-xl text-white text-3xl">
+                                <i class="fas ${category.icon}"></i>
+                            </div>
+                            <h2 class="text-3xl font-bold text-gray-800">ผลงานจาก: ${category.name}</h2>
+                        </div>
+                    </div>
+
+                    ${filteredProjects.length > 0 ? `
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 fade-in">
+                            ${filteredProjects.map(proj => `
+                                <div class="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row">
+                                    <img src="${proj.img}" alt="${proj.title}" class="w-full md:w-48 h-64 md:h-auto object-cover">
+                                    <div class="p-6 flex-1">
+                                        <h3 class="text-2xl font-bold text-gray-800 mb-2">${proj.title}</h3>
+                                        <p class="text-green-700 font-semibold mb-4"><i class="fas fa-user-circle mr-1"></i> โดย: ${proj.creator}</p>
+                                        <p class="text-gray-600 mb-6 text-sm leading-relaxed">${proj.desc}</p>
+                                        
+                                        <div class="border-t pt-4">
+                                            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">ช่องทางติดต่อ</p>
+                                            <div class="flex flex-wrap gap-3">
+                                                ${proj.links.fb ? `<a href="#" class="text-blue-600 hover:scale-110 transition"><i class="fab fa-facebook-square text-2xl"></i></a>` : ''}
+                                                ${proj.links.yt ? `<a href="#" class="text-red-600 hover:scale-110 transition"><i class="fab fa-youtube text-2xl"></i></a>` : ''}
+                                                ${proj.links.web ? `<a href="#" class="text-gray-600 hover:scale-110 transition"><i class="fas fa-globe text-2xl"></i></a>` : ''}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : `
+                        <div class="text-center py-20 bg-white rounded-2xl shadow-inner fade-in">
+                            <i class="fas fa-folder-open text-gray-300 text-6xl mb-4"></i>
+                            <p class="text-gray-500 text-lg">ยังไม่มีผลงานในหมวดหมู่นี้ ร่วมแบ่งปันผลงานของคุณได้ที่ช่องทางติดต่อเรา</p>
+                        </div>
+                    `}
+                `;
+            }
+			
+			 else if (page === 'buying-points') {
+                content.innerHTML = `
+                    <div class="fade-in">
+                        <div class="text-center mb-10">
+                            <h2 class="text-3xl font-bold text-green-800 mb-2">แหล่งรับซื้อและจุดรับรีไซเคิล</h2>
+                            <p class="text-gray-600">รวบรวมสถานที่รับซื้อขยะรีไซเคิลและจุดรับบริจาคเพื่อนำไปใช้ประโยชน์ต่อ</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            ${buyingPoints.map(point => `
+                                <div class="bg-white p-6 rounded-2xl shadow-md border-t-4 border-green-500 flex items-start space-x-4">
+                                    <div class="bg-green-100 p-3 rounded-full text-green-600">
+                                        <i class="fas fa-map-marker-alt text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-800">${point.name}</h3>
+                                        <p class="text-gray-500 text-sm mb-2"><i class="fas fa-location-arrow mr-1"></i> ${point.location}</p>
+                                        <p class="${point.color} font-semibold text-sm mb-3 underline decoration-dotted">${point.types}</p>
+                                        <a href="tel:${point.tel}" class="inline-flex items-center text-green-700 font-bold hover:text-green-900">
+                                            <i class="fas fa-phone-alt mr-2"></i> ${point.tel}
+                                        </a>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <div class="mt-12 bg-green-100 p-8 rounded-3xl text-center">
+                            <h3 class="text-2xl font-bold text-green-800 mb-4">ร้านของเก่าใกล้บ้านคุณ</h3>
+                            <p class="text-gray-600 mb-6">นอกจากบริษัทใหญ่ข้างต้น คุณยังสามารถนำขยะรีไซเคิลไปขายได้ที่ร้านรับซื้อของเก่าทั่วไปใกล้บ้านคุณ</p>
+                            <button class="bg-green-600 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-green-700 transition">
+                                <i class="fas fa-search-location mr-2"></i> ค้นหาบน Google Maps
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+			
+            else if (page === 'tips') {
+                content.innerHTML = `
+                    <div class="max-w-4xl mx-auto fade-in">
+                        <h2 class="text-3xl font-bold text-green-800 mb-8 text-center">วิธีแยกขยะก่อนรีไซเคิล</h2>
+                        <div class="space-y-6">
+                            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-500">
+                                <h3 class="font-bold text-xl mb-2 text-blue-700">1. ล้างให้สะอาด</h3>
+                                <p class="text-gray-600">โดยเฉพาะบรรจุภัณฑ์พลาสติกและกระป๋อง ควรล้างคราบอาหารออกก่อนเพื่อไม่ให้เน่าเสียและเป็นแหล่งเชื้อโรค</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-yellow-500">
+                                <h3 class="font-bold text-xl mb-2 text-yellow-700">2. แยกชิ้นส่วนที่ต่างกัน</h3>
+                                <p class="text-gray-600">เช่น ขวดพลาสติก ควรแยกฝา ขวด และฉลากออกจากกัน เพราะบางครั้งเป็นพลาสติกคนละชนิด</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-orange-500">
+                                <h3 class="font-bold text-xl mb-2 text-orange-700">3. ทำให้แบนที่สุด</h3>
+                                <p class="text-gray-600">กล่องกระดาษหรือขวดน้ำ ควรบีบหรือพับให้แบนเพื่อประหยัดพื้นที่ในการจัดเก็บและขนส่ง</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            else if (page === 'about') {
+                content.innerHTML = `
+                    <div class="text-center py-12 fade-in">
+                        <i class="fas fa-leaf text-6xl text-green-500 mb-6"></i>
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4">เกี่ยวกับ Recycle Garbage</h2>
+                        <p class="max-w-2xl mx-auto text-gray-600 text-lg leading-relaxed">
+                            พื้นที่แห่งนี้ถูกสร้างขึ้นเพื่อสร้างแรงบันดาลใจในการรักษ์โลก โดยการนำเสนอผลงานศิลปะและของใช้ที่มีประโยชน์จากวัสดุเหลือใช้ เพื่อให้ "ขยะ" ไม่ใช่จุดจบ แต่เป็น "จุดเริ่มต้น" ของสิ่งใหม่ที่สวยงามกว่าเดิม
+							<div class="bg-white p-6 rounded-lg shadow-md fade-in">
+  <h2 class="text-2xl font-bold text-purple-600 mb-4">ผู้จัดทำเว็บไซต์</h2>
+  
+  <p><strong>ชื่อ:</strong> ขวัญฤทัย เชนประโคน</p>
+  <p><strong>ระดับชั้น:</strong> ปวช.3</p>
+  <p><strong>โรงเรียน:</strong> วิทยาลัยการอาชีพประโคนชัย</p>
+  <p><strong>รายวิชา:</strong> การพัฒนาเว็บไซต์</p>
+  <p><strong>อาจารย์ที่ปรึกษา:</strong> นาง ประภารัตน์ วารีร้อย</p>
+  
+  <hr class="my-4">
+
+  <p><strong>ผู้ดูแลระบบ:</strong> ขวัญฤทัย เชนประโคน</p>
+  <p><strong>ติดต่อ:</strong> k97942078@email.com</p>
+<hr class="my-4">
+
+<strong>ชื่อ:</strong> ชลธิดา เรืองรัมย์</p>
+  <p><strong>ระดับชั้น:</strong> ปวช.3</p>
+  <p><strong>โรงเรียน:</strong> วิทยาลัยการอาชีพประโคนชัย</p>
+  <p><strong>รายวิชา:</strong> การพัฒนาเว็บไซต์</p>
+  <p><strong>อาจารย์ที่ปรึกษา:</strong> นาง ประภารัตน์ วารีร้อย</p>
+  
+  <hr class="my-4">
+
+  <p><strong>ผู้ดูแลระบบ:</strong>ชลธิดา เรืองรัมย์</p>
+  <p><strong>ติดต่อ:</strong> chithidaaa@gmail.com</p>
+
+<hr class="my-4">
+
+<strong>ชื่อ:</strong> ธัญชนก มากะเต</p>
+  <p><strong>ระดับชั้น:</strong> ปวช.3</p>
+  <p><strong>โรงเรียน:</strong> วิทยาลัยการอาชีพประโคนชัย</p>
+  <p><strong>รายวิชา:</strong> การพัฒนาเว็บไซต์</p>
+  <p><strong>อาจารย์ที่ปรึกษา:</strong> นาง ประภารัตน์ วารีร้อย</p>
+  
+   <hr class="my-4">
+   
+  <p><strong>ผู้ดูแลระบบ:</strong>ธัญชนก มากะเต</p> 
+  <p><strong>ติดต่อ:</strong> makatethaychnk232@gmail.com</p>
+</div>
+                        </p>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize Home Page
+        window.onload = () => showPage('home');
+    </script>
+</body>
+</html>
